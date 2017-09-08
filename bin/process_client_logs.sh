@@ -2,16 +2,17 @@
 
 dir=$1
 
+#move to the directory containing the log files
 cd $dir/var/log
 
+#concatenate logs into one file so they are easier to filter through
 cat * > mergeFile.txt
 
-mf=mergeFile.txt
+#reduce logs to only the entries with failed passwords
+awk '/Failed password/' mergeFile.txt > pwFail.txt
 
-awk '/Failed password/' $mf > pwFail.txt
-
+#use regex to transform the entries into the desired format
 awk '{ print gensub(/(\w+)\s+([[:digit:]]+)\s([[:digit:]]{2}).* Failed password .* (\w+) from (\S+).*/,  "\\1 \\2 \\3 \\4 \\5", "g");}' pwFail.txt > failed_login_data.txt
 
+#place output file in the correct directory
 mv failed_login_data.txt $dir
-
-cd $dir
