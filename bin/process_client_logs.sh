@@ -14,5 +14,9 @@ awk '/Failed password/' mergeFile.txt > pwFail.txt
 #use regex to transform the entries into the desired format
 awk '{ print gensub(/(\w+)\s+([[:digit:]]+)\s([[:digit:]]{2}).* Failed password .* (\w+) from (\S+).*/,  "\\1 \\2 \\3 \\4 \\5", "g");}' pwFail.txt > failed_login_data.txt
 
+#clean up intermediary files
+rm mergeFile.txt
+rm pwFail.txt
+
 #place output file in the correct directory
-mv failed_login_data.txt $dir
+mv failed_login_data.txt ../../
