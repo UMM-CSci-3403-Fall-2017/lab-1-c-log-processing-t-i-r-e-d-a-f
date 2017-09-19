@@ -6,9 +6,13 @@ files=$@
 #make scratch directory
 scratch=`mktemp -d`
 
-#########IN PROGRESS, STILL NEEDS FOLDER NAMES##############
-
-#extract all arguments into directory
+#extract all arguments into scratch directory
 for var in $files; do
-	tar -zxf $var > $scratch
+	#get name of computer from filename using lookahead and lookbehind
+	filename=${var#*/}
+	name=${filename%_*}
+
+	#make directory and place log files in them
+	mkdir scratch/$name
+	tar -zxf $var -C scratch/$name
 done
