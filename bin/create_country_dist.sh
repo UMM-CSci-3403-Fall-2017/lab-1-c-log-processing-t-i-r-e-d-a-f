@@ -18,6 +18,8 @@ join -1 1 -2 1 user_namesIP.txt IP_map.txt > joined_IP.txt
 
 awk '{print $2}' joined_IP.txt | sort | uniq -c > counted_IP.txt 
 
+awk '{print "data.addRow([\x27"$2"\x27, "$1"]);"}' counted_IP.txt > code_counts.txt
+
 #wrap contents in header and footer and place results in desired output file
 ./bin/wrap_contents.sh code_counts.txt ./html_components/country_dist country_dist.html
 
